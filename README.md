@@ -15,7 +15,7 @@ This guide will help you set up and use the AI Voice Bot with Gemini AI and Elev
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/ai-dud/Telegram_ai_bot.git
    cd ai-voice-bot
    ```
 
