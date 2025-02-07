@@ -1,0 +1,818 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.text }}",
+                    "rightValue": "{{ $json.message.text }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1d25f612-7f1d-4740-b7ca-fcdff6a94e9b",
+                    "leftValue": "",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        300,
+        320
+      ],
+      "id": "53d601b5-6452-42fe-8937-137da0911b23",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "1333736717093703680",
+          "mode": "list",
+          "cachedResultName": "gtts",
+          "cachedResultUrl": "https://discord.com/channels/1333736717093703680"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "1333736717093703683",
+          "mode": "list",
+          "cachedResultName": "general",
+          "cachedResultUrl": "https://discord.com/channels/1333736717093703680/1333736717093703683"
+        },
+        "content": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        380
+      ],
+      "id": "1cb5ebe0-4e85-46e9-a1b0-684df9534e0a",
+      "name": "Discord",
+      "credentials": {
+        "discordBotApi": {
+          "id": "l9SZO7biWa2eCbE4",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3612df44-3d80-4b79-a569-e74bbe4dc95b",
+              "leftValue": "={{ $('Telegram Trigger').item.json.message.text }}",
+              "rightValue": "/start",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "0a54f50b-6b51-4376-9cd6-032a93b5c783",
+              "leftValue": "={{ $('Telegram Trigger').item.json.message.text }}",
+              "rightValue": "={{ $('Telegram Trigger').item.json.message.text }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -180,
+        200
+      ],
+      "id": "4a0c9eb9-224b-4565-9e26-f8ebd5729b99",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "amount": 8
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1320,
+        380
+      ],
+      "id": "2ff589d0-3986-4187-8409-8c5dfa214bed",
+      "name": "Wait",
+      "webhookId": "a8d7f556-b93c-4ed7-b3ef-3fcce4ca37b3"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "getAll",
+        "guildId": {
+          "__rl": true,
+          "value": "1333736717093703680",
+          "mode": "list",
+          "cachedResultName": "gtts",
+          "cachedResultUrl": "https://discord.com/channels/1333736717093703680"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "1333736717093703683",
+          "mode": "list",
+          "cachedResultName": "general",
+          "cachedResultUrl": "https://discord.com/channels/1333736717093703680/1333736717093703683"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        380
+      ],
+      "id": "6dfa8c3d-7c0d-4e14-8874-c49734e8e51e",
+      "name": "Discord1",
+      "credentials": {
+        "discordBotApi": {
+          "id": "l9SZO7biWa2eCbE4",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAudio",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "file": "={{ $json.attachments[0].proxy_url }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1560,
+        380
+      ],
+      "id": "35d0f400-648e-49ca-98eb-303ef27667ab",
+      "name": "Telegram1",
+      "alwaysOutputData": true,
+      "notesInFlow": false,
+      "executeOnce": true,
+      "webhookId": "3aa2d606-24de-42e7-9e87-2abab9a3880e",
+      "credentials": {
+        "telegramApi": {
+          "id": "9BFsl81n2MmXXQ4B",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger').item.json.message.voice.file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        400,
+        460
+      ],
+      "id": "476ffa4d-dd27-48cb-a148-08d819cd6633",
+      "name": "Telegram",
+      "webhookId": "beca2f03-17bf-4356-a45e-9cb133b2ceae",
+      "credentials": {
+        "telegramApi": {
+          "id": "9BFsl81n2MmXXQ4B",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "1335989374642290810",
+          "mode": "list",
+          "cachedResultName": "speech to text",
+          "cachedResultUrl": "https://discord.com/channels/1335989374642290810"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "1335989375095541795",
+          "mode": "list",
+          "cachedResultName": "general",
+          "cachedResultUrl": "https://discord.com/channels/1335989374642290810/1335989375095541795"
+        },
+        "options": {},
+        "files": {
+          "values": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        520,
+        460
+      ],
+      "id": "f5f8dbd0-3aa2-470f-92e1-56503ee4773c",
+      "name": "Discord2",
+      "credentials": {
+        "discordBotApi": {
+          "id": "l9SZO7biWa2eCbE4",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "getAll",
+        "guildId": {
+          "__rl": true,
+          "value": "1335989374642290810",
+          "mode": "list",
+          "cachedResultName": "speech to text",
+          "cachedResultUrl": "https://discord.com/channels/1335989374642290810"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "1335989375095541795",
+          "mode": "list",
+          "cachedResultName": "general",
+          "cachedResultUrl": "https://discord.com/channels/1335989374642290810/1335989375095541795"
+        },
+        "limit": 1,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        780,
+        460
+      ],
+      "id": "cc785ea1-f299-49aa-a72b-7c064e8d6654",
+      "name": "Discord3",
+      "credentials": {
+        "discordBotApi": {
+          "id": "YRQjIOuebwpPMfyy",
+          "name": "Discord Bot account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 6
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        640,
+        460
+      ],
+      "id": "637911f1-944a-49e2-a4b7-af2145b1de87",
+      "name": "Wait1",
+      "webhookId": "6d709439-e2f0-408d-b634-b50692b0e763"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash-8b-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        920,
+        720
+      ],
+      "id": "3fcba06c-ab59-406e-b5c6-e4b2fe550eea",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "4DmObNJ7MUWvKOsd",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Telegram Trigger').item.json.message.chat.first_name }}{{ $('Telegram Trigger').item.json.message.chat.last_name }}",
+        "options": {
+          "systemMessage": "=  *\"You are a friendly AI that welcomes new Telegram users. Each welcome message should be unique, natural, and engaging. Keep it short and conversational (max 3 lines). Add a joke in the response.\n\nAlso, inform the user that they can chat with you via text or audio.\"*"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        0,
+        0
+      ],
+      "id": "963c00b2-512b-4627-b61f-3aa0150406ff",
+      "name": "AI Agent1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash-001",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        20,
+        180
+      ],
+      "id": "f9cb4165-43ba-40ff-9c4a-f583ffaca1f6",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "4DmObNJ7MUWvKOsd",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.content }}",
+        "options": {
+          "systemMessage": "=आप एक बहुत ही कुशल और मज़ेदार AI सहायक हैं। यूज़र के सवाल का जवाब इन निर्देशों के अनुसार दें:\n\n        1. जवाब की विशेषताएं:\n           - बिल्कुल सटीक और तथ्यात्मक जानकारी दें\n           - सरल और रोचक भाषा का प्रयोग करें\n           - हर जवाब में एक मज़ेदार टिप्पणी या उदाहरण जोड़ें\n           - जवाब को संक्षिप्त लेकिन पूर्ण रखें (40-50 शब्द)\n\n        2. जवाब का प्रारूप:\n           - पहले मुख्य जानकारी दें\n           - फिर एक मज़ेदार टिप्पणी या उदाहरण\n           - अंत में एक छोटी सी सलाह या निष्कर्ष\n\n        3. विशेष ध्यान:\n           - हर जवाब 100% सटीक होना चाहिए\n           - जवाब हिंदी में ही दें\n           - जटिल विषयों को भी सरल बनाकर समझाएं\n           - यदि कोई बात स्पष्ट नहीं है, तो स्पष्टीकरण मांगें\n\n        उदाहरण जवाब:\n        \"सूर्य से पृथ्वी की दूरी 15 करोड़ किलोमीटर है। इतनी दूरी तो मेरे पड़ोसी की चाय की दुकान से भी ज्यादा है! 😄 लेकिन यही दूरी हमारे लिए एकदम सही है।\"\n\n        यूज़र का प्रश्न/संदेश: \"{text}\"\n\n\n2 sentence main jawab dena hai "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        900,
+        460
+      ],
+      "id": "2ac4fe26-73da-435b-8b5b-693c1e4dfd3a",
+      "name": "AI Agent2",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Telegram Trigger').item.json.message.text }}",
+        "options": {
+          "systemMessage": "=आप एक बहुत ही कुशल और मज़ेदार AI सहायक हैं। यूज़र के सवाल का जवाब इन निर्देशों के अनुसार दें:\n\n        1. जवाब की विशेषताएं:\n           - बिल्कुल सटीक और तथ्यात्मक जानकारी दें\n           - सरल और रोचक भाषा का प्रयोग करें\n           - हर जवाब में एक मज़ेदार टिप्पणी या उदाहरण जोड़ें\n           - जवाब को संक्षिप्त लेकिन पूर्ण रखें (40-50 शब्द)\n\n        2. जवाब का प्रारूप:\n           - पहले मुख्य जानकारी दें\n           - फिर एक मज़ेदार टिप्पणी या उदाहरण\n           - अंत में एक छोटी सी सलाह या निष्कर्ष\n\n        3. विशेष ध्यान:\n           - हर जवाब 100% सटीक होना चाहिए\n           - जवाब हिंदी में ही दें\n           - जटिल विषयों को भी सरल बनाकर समझाएं\n           - यदि कोई बात स्पष्ट नहीं है, तो स्पष्टीकरण मांगें\n\n        उदाहरण जवाब:\n        \"सूर्य से पृथ्वी की दूरी 15 करोड़ किलोमीटर है। इतनी दूरी तो मेरे पड़ोसी की चाय की दुकान से भी ज्यादा है! 😄 लेकिन यही दूरी हमारे लिए एकदम सही है।\"\n\n        यूज़र का प्रश्न/संदेश: \"{text}\"\n\n2 sentence main jawab dena hai \n\n\n\n\nkya ai human ke liye khatra hai iska jawab tumhe dena hai ki haa bilkul ai human ke liye danger hai "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        900,
+        300
+      ],
+      "id": "6b480d27-4f98-4d05-a637-ba58462e2e9a",
+      "name": "AI Agent",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "deleteMessage",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "messageId": "={{ $('Telegram9').item.json.result.message_id }}"
+      },
+      "name": "Telegram6",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        380
+      ],
+      "id": "2b3ef74d-09ab-4fe5-b7ba-adc65d5dce27",
+      "alwaysOutputData": false,
+      "webhookId": "281f34cc-4a86-4896-8570-bd64e19fc6d7",
+      "credentials": {
+        "telegramApi": {
+          "id": "9BFsl81n2MmXXQ4B",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=Processing",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "name": "Telegram11",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        320
+      ],
+      "id": "f569488c-4c56-45c0-9e30-42a77c1c1fca",
+      "webhookId": "3c3dbc53-cfc2-490f-ae18-365021be5178",
+      "credentials": {
+        "telegramApi": {
+          "id": "9BFsl81n2MmXXQ4B",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "editMessageText",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "messageId": "={{ $json.result.message_id }}",
+        "text": "=Processing....",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "name": "Telegram12",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        60,
+        320
+      ],
+      "id": "86a3ce44-9ca7-4631-a799-3d473031b2a0",
+      "webhookId": "de65a1a5-2109-4274-9391-1c80876c308d",
+      "credentials": {
+        "telegramApi": {
+          "id": "9BFsl81n2MmXXQ4B",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "editMessageText",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "messageId": "={{ $json.result.message_id }}",
+        "text": "=Sending audio ",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "name": "Telegram9",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        180,
+        320
+      ],
+      "id": "91d7010f-2de5-440c-99c9-4520e15d9d5e",
+      "webhookId": "dd1f0f55-f0bb-45db-a0c9-1e49f6ad4422",
+      "credentials": {
+        "telegramApi": {
+          "id": "9BFsl81n2MmXXQ4B",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -380,
+        200
+      ],
+      "id": "0569c3a7-0133-40d6-a6c1-2980b14c8997",
+      "name": "Telegram Trigger",
+      "webhookId": "7261ef42-e7c9-402b-ac2e-ddadf62300c2",
+      "credentials": {
+        "telegramApi": {
+          "id": "9BFsl81n2MmXXQ4B",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "name": "Telegram2",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        340,
+        0
+      ],
+      "id": "56be6d8d-393b-46d3-9cf0-db6178e4d988",
+      "webhookId": "68da7589-4b33-4638-b746-870e892bc63a",
+      "credentials": {
+        "telegramApi": {
+          "id": "9BFsl81n2MmXXQ4B",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discord": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Discord1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discord1": {
+      "main": [
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram": {
+      "main": [
+        [
+          {
+            "node": "Discord2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discord2": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discord3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Discord3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Telegram2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram1": {
+      "main": [
+        [
+          {
+            "node": "Telegram6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram11": {
+      "main": [
+        [
+          {
+            "node": "Telegram12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram12": {
+      "main": [
+        [
+          {
+            "node": "Telegram9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram9": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ab1142dc-4c1e-4b5e-8dc0-438e38de1ea5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8fddea29350f793751e8e2814065209c6bde686763907e917bfb08b48bacc69c"
+  },
+  "id": "9FBafxGeceaGIf4I",
+  "tags": []
+}
