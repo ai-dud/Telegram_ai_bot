@@ -7,7 +7,7 @@ import tempfile
 import time
 
 # Add your Discord bot token here
-TOKEN = "MTMzNTk4ODk4NDY1NjAzOTk2Ng.GO9Zzy.to3Y7oigzmorDfXakjXg3DgOmmfooKiJTaD25o"
+TOKEN = "your telegram token"
 
 # Set up bot
 intents = discord.Intents.default()
