@@ -1,4 +1,4 @@
-import discord
+ven laps import discord
 from discord.ext import commands
 from elevenlabs import Voice
 from elevenlabs.client import ElevenLabs
@@ -16,8 +16,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # API Keys
-ELEVEN_LABS_API_KEY = "sk_4c7ce081af9218ad551afc4f5b686d30e9967d50598eb6ba"
-DISCORD_TOKEN = "MTMzMzc0ODg1MzQ1NDY3MTg4NA.GuS2Rp.-sJ5aDbocFDyfw157cjAkSo9AJr903ppNqPr4c"
+ELEVEN_LABS_API_KEY = "you token"
+DISCORD_TOKEN = "your discord token "
 N8N_CHANNEL_ID = "1333736717093703680"  # n8n channel ID
 os.environ["ELEVEN_API_KEY"] = ELEVEN_LABS_API_KEY
 
